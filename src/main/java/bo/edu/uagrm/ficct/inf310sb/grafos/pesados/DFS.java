@@ -1,8 +1,6 @@
 package bo.edu.uagrm.ficct.inf310sb.grafos.pesados;
 
 import bo.edu.uagrm.ficct.inf310sb.grafos.excepciones.ExcepcionAristaNoExiste;
-import bo.edu.uagrm.ficct.inf310sb.grafos.nopesados.UtilsRecorridos;
-
 import java.util.ArrayList;
 import java.util.List;
 

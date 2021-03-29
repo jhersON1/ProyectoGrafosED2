@@ -1,6 +1,6 @@
 package Presentacion;
 
-import bo.edu.uagrm.ficct.inf310sb.grafos.Grafo;
+import bo.edu.uagrm.ficct.inf310sb.grafos.excepciones.ExcepcionAristaNoExiste;
 import bo.edu.uagrm.ficct.inf310sb.grafos.excepciones.ExcepcionAristaYaExiste;
 import bo.edu.uagrm.ficct.inf310sb.grafos.pesados.GrafoPesado;
 
@@ -24,15 +24,12 @@ public class MainGrafos extends javax.swing.JFrame {
         initComponents();
         grafo = new GrafoPesado();
         deshabilitarHabilitar(false);
-
         cbOrigen.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     String ciudadSeleccionadaAurita = e.getItem().toString();
-                    //ciudadOrigen = ciudadSeleccionadaAurita;
                     ciudadOrigen = cbOrigen.getSelectedIndex();
-//                    if (ciudadSeleccionadaAurita.equals(ciudadDestino)) {
                     if (ciudadOrigen == ciudadDestino) {
                         accion = "ERROR";
                     } else {
@@ -77,22 +74,22 @@ public class MainGrafos extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jtPrecio = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jtDistancia = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
         areaDibujo2 = new java.awt.Panel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        setMaximumSize(new java.awt.Dimension(800, 800));
+        setPreferredSize(new java.awt.Dimension(1200, 650));
+        setResizable(false);
 
         areaDibujo.setBackground(new java.awt.Color(204, 204, 204));
+        areaDibujo.setPreferredSize(new java.awt.Dimension(550, 350));
         areaDibujo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 areaDibujoMouseClicked(evt);
@@ -103,11 +100,11 @@ public class MainGrafos extends javax.swing.JFrame {
         areaDibujo.setLayout(areaDibujoLayout);
         areaDibujoLayout.setHorizontalGroup(
             areaDibujoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 523, Short.MAX_VALUE)
+            .addGap(0, 550, Short.MAX_VALUE)
         );
         areaDibujoLayout.setVerticalGroup(
             areaDibujoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 347, Short.MAX_VALUE)
+            .addGap(0, 350, Short.MAX_VALUE)
         );
 
         jButton1.setText("AÑADIR CIUDAD");
@@ -136,10 +133,6 @@ public class MainGrafos extends javax.swing.JFrame {
 
         jtPrecio.setEnabled(false);
 
-        jLabel4.setText("DISTANCIA (Km)");
-
-        jtDistancia.setEnabled(false);
-
         jButton3.setText("GUARDAR RUTA");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,19 +147,11 @@ public class MainGrafos extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setText("DISTANCIA MAS CORTA");
+        jButton5.setText("CAMINO CON MENOR COSTO");
         jButton5.setEnabled(false);
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
-            }
-        });
-
-        jButton6.setText("PRECIO MAS ECONOMICO");
-        jButton6.setEnabled(false);
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
             }
         });
 
@@ -178,141 +163,118 @@ public class MainGrafos extends javax.swing.JFrame {
             }
         });
 
-        jButton8.setText("MOSTRAR"); // NOI18N
-        jButton8.setEnabled(false);
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
+        areaDibujo2.setPreferredSize(new java.awt.Dimension(550, 350));
 
         javax.swing.GroupLayout areaDibujo2Layout = new javax.swing.GroupLayout(areaDibujo2);
         areaDibujo2.setLayout(areaDibujo2Layout);
         areaDibujo2Layout.setHorizontalGroup(
             areaDibujo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 523, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         areaDibujo2Layout.setVerticalGroup(
             areaDibujo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 315, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         jLabel6.setFont(new java.awt.Font("Sitka Banner", 1, 18)); // NOI18N
-        jLabel6.setText("Su ruta mas corta aparecera aqui");
+        jLabel6.setText("Su ruta mas corta aparecerá aquí");
 
         jLabel7.setFont(new java.awt.Font("Sitka Banner", 1, 18)); // NOI18N
-        jLabel7.setText("Añada su ciudad aqui ");
+        jLabel7.setText("Añada su ciudad aquí ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(areaDibujo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(24, 24, 24))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(145, 145, 145)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(272, 272, 272))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(22, 22, 22))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jtDistancia, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cbOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2)
-                                    .addComponent(cbDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(93, 93, 93)
-                                        .addComponent(jLabel4))
-                                    .addComponent(jLabel3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton6)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 217, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(48, 48, 48))
+                        .addGap(220, 220, 220)
+                        .addComponent(jLabel7))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(areaDibujo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(222, 222, 222)
-                    .addComponent(jLabel7)
-                    .addContainerGap(639, Short.MAX_VALUE)))
+                        .addContainerGap()
+                        .addComponent(areaDibujo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(areaDibujo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(23, 23, 23))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(124, 124, 124)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbOrigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(23, 23, 23)
+                                    .addComponent(jLabel1)))
+                            .addComponent(jtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(67, 67, 67)
+                                .addComponent(jLabel2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(46, 46, 46)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(162, 162, 162)
+                        .addComponent(jLabel3)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(204, 204, 204))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel6)
+                        .addGap(184, 184, 184))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(42, Short.MAX_VALUE)
-                        .addComponent(areaDibujo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6)
-                        .addGap(6, 6, 6)
-                        .addComponent(areaDibujo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1)
-                        .addGap(8, 8, 8)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton7)
+                            .addComponent(cbDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(23, 23, 23)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jButton6))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jtDistancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton8))))
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(146, 146, 146)))
-                .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(19, 19, 19)
-                    .addComponent(jLabel7)
-                    .addContainerGap(711, Short.MAX_VALUE)))
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton7)
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel6)))
+                .addGap(2, 2, 2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(areaDibujo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(areaDibujo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -329,7 +291,6 @@ public class MainGrafos extends javax.swing.JFrame {
                     cbDestino.addItem(nuevoNombreDeCiudad);
                     cbOrigen.addItem(nuevoNombreDeCiudad);
                     actualizarVista();
-                    //System.out.println(grafo.toString());
                 } else {
                     show("Debe insertar un nombre");
                 }
@@ -358,25 +319,19 @@ public class MainGrafos extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         if (accion.equals("confirmarRuta")) {
-/*            int U = grafo.getNumero(ciudadOrigen);
-            int V = grafo.getNumero(ciudadDestino);*/
             int U = ciudadOrigen;
             int V = ciudadDestino;
             double kilometrosDeLaRuta = 0;
             double PrecioDeLaRuta = 0;
-            //try {
-                kilometrosDeLaRuta = Double.parseDouble(jtDistancia.getText());
+            //try {       
                 PrecioDeLaRuta = Double.parseDouble(jtPrecio.getText());
                 if (U == -1 || V == -1) {
                     show("Ups!");
-                } else {
-                     
+                } else {  
                     if (!existeMismaRutaConCostoDiferente(kilometrosDeLaRuta) || !existeMismaRutaConPrecioDiferente(PrecioDeLaRuta)) {
-                        try {
-                            //grafo.addArista(U, PrecioDeLaRuta, kilometrosDeLaRuta, V);
+                        try {                           
                             grafo.insertarArista(U, V, PrecioDeLaRuta);
-                        } catch (ExcepcionAristaYaExiste ex) {
-                            //Logger.getLogger(MainGrafos.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ExcepcionAristaYaExiste ex) {                         
                         }
                         deshabilitarHabilitar(false);                     
                         actualizarVista();
@@ -398,17 +353,12 @@ public class MainGrafos extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // carga las matrices y realiza el algoritmo de floyd
-        System.err.println("1");
         grafo.caragarM1();
-        System.err.println("2");
         grafo.caragarM3();
-        System.err.println("3");
         grafo.floyd1();
-        System.err.println("4");
         grafo.floyd3();
-        System.err.println("5");
         jButton5.setEnabled(true);
-        jButton6.setEnabled(true);
+      //  jButton6.setEnabled(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -420,113 +370,37 @@ public class MainGrafos extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-        cbOrigen.setEnabled(true);
-        cbDestino.setEnabled(true);
-        jButton8.setEnabled(true);
-    }//GEN-LAST:event_jButton6ActionPerformed
-
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-/*        int U = grafo.getNumero(ciudadOrigen);
-        int V = grafo.getNumero(ciudadDestino);*/
         int U = ciudadOrigen;
         int V = ciudadDestino;
-        String s, p;
-        if (grafo.existeAdyacencia(U, V)) {
-/*            s = grafo.mostrarD(U, V);
-            p = grafo.mostrarDR(U, V);
-            show(s + p);*/
-            cbOrigen.setEnabled(false);
-            cbDestino.setEnabled(false);
-            jButton7.setEnabled(false);
-
-            //VR = grafo.mostrarDRV(U, V);
-            List<Integer> aux = grafo.caminoMasCortoFloydWarshall(U, V);
-            VR = new int[aux.size()];
-           // System.err.println("Entrando al for");
-           // System.err.println(VR.length);
-            for (int i = 0; i < aux.size(); i++) {
-                VR[i] = aux.get(i);
-               // System.err.println("elemento: "+aux.get(i));
-            } 
-            mostrarRuta();
-        } else {
-            show("No se puede llegar");
-            cbOrigen.setEnabled(false);
-            cbDestino.setEnabled(false);
-            jButton7.setEnabled(false);
+        try {
+            if (grafo.existeCamino(U, V)) {
+                cbOrigen.setEnabled(false);
+                cbDestino.setEnabled(false);
+                jButton7.setEnabled(false);
+                
+                List<Integer> aux = grafo.caminoMasCortoFloydWarshall(U, V);
+                VR = new int[aux.size()];
+                for (int i = 0; i < aux.size(); i++) {
+                    VR[i] = aux.get(i);
+                }
+                mostrarRuta();
+            } else {
+                show("No se puede llegar");
+                cbOrigen.setEnabled(false);
+                cbDestino.setEnabled(false);
+                jButton7.setEnabled(false);
+            }
+        } catch (ExcepcionAristaNoExiste ex) {
+            
         }
 
     }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-//        // TODO add your handling code here:
-///*        int U = grafo.getNumero(ciudadOrigen);
-//        int V = grafo.getNumero(ciudadDestino);*/
-//        int U = ciudadOrigen;
-//        int V = ciudadDestino;
-//        String s, p;
-//        if (grafo.existeAdyacencia(U, V)) {
-///*            s = grafo.mostrarP(U, V);
-//            p = grafo.mostrarPR(U, V);
-//            show(s + " " + p);*/
-//            cbOrigen.setEnabled(false);
-//            cbDestino.setEnabled(false);
-//            jButton8.setEnabled(false);
-//
-//            VR = grafo.mostrarPRV(U, V);
-//            mostrarRuta();
-//        } else {
-//            show("No se puede llegar");
-//            cbOrigen.setEnabled(false);
-//            cbDestino.setEnabled(false);
-//            jButton8.setEnabled(false);
-//        }
-    }//GEN-LAST:event_jButton8ActionPerformed
     //--------FUNCIONES Y PROCEDIMIENTOS PARA VALIDAR---
-/*    private boolean existeMismaRutaConCostoDiferente(double kilometros) {
-*//*        int posicionDeCiudadOrigen = grafo.getNumero(ciudadOrigen);
-        int posicionDeCiudadDestino = grafo.getNumero(ciudadDestino);*//*
-        int posicionDeCiudadOrigen = ciudadOrigen;
-        int posicionDeCiudadDestino = ciudadDestino;
-        if (grafo.posicionDeCiudadOrigen.existe(posicionDeCiudadDestino)) {
-            for (int i = 0; i < grafo.V[posicionDeCiudadOrigen].length(); i++) {
-                if (grafo.V[posicionDeCiudadOrigen].getDistancia(i + 1) == kilometros) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean existeMismaRutaConPrecioDiferente(double Precio) {
-*//*        int posicionDeCiudadOrigen = grafo.getNumero(ciudadOrigen);
-        int posicionDeCiudadDestino = grafo.getNumero(ciudadDestino);*//*
-        int posicionDeCiudadOrigen = ciudadOrigen;
-        int posicionDeCiudadDestino = ciudadDestino;
-        if (grafo.V[posicionDeCiudadOrigen].existe(posicionDeCiudadDestino)) {
-            for (int i = 0; i < grafo.V[posicionDeCiudadOrigen].length(); i++) {
-                if (grafo.V[posicionDeCiudadOrigen].getPrecio(i + 1) == Precio) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }*/
     private boolean existeMismaRutaConCostoDiferente(double kilometros) {
-/*        int posicionDeCiudadOrigen = grafo.getNumero(ciudadOrigen);
-        int posicionDeCiudadDestino = grafo.getNumero(ciudadDestino);*/
         int posicionDeCiudadOrigen = ciudadOrigen;
         int posicionDeCiudadDestino = ciudadDestino;
-/*        if (grafo.posicionDeCiudadOrigen.existe(posicionDeCiudadDestino)) {
-            for (int i = 0; i < grafo.V[posicionDeCiudadOrigen].length(); i++) {
-                if (grafo.V[posicionDeCiudadOrigen].getDistancia(i + 1) == kilometros) {
-                    return true;
-                }
-            }
-        }*/
         if (grafo.existeAdyacencia(posicionDeCiudadOrigen,posicionDeCiudadDestino)) {
             for (int i = 0; i < grafo.listaDeAyacencia().get(posicionDeCiudadOrigen).size(); i++) {
                 if (grafo.listaDeAyacencia().get(i).get(posicionDeCiudadOrigen).getPeso() == kilometros) {
@@ -538,18 +412,8 @@ public class MainGrafos extends javax.swing.JFrame {
     }
 
     private boolean existeMismaRutaConPrecioDiferente(double Precio) {
-/*        int posicionDeCiudadOrigen = grafo.getNumero(ciudadOrigen);
-        int posicionDeCiudadDestino = grafo.getNumero(ciudadDestino);*/
         int posicionDeCiudadOrigen = ciudadOrigen;
         int posicionDeCiudadDestino = ciudadDestino;
-/*        if (grafo.V[posicionDeCiudadOrigen].existe(posicionDeCiudadDestino)) {
-            for (int i = 0; i < grafo.V[posicionDeCiudadOrigen].length(); i++) {
-                if (grafo.V[posicionDeCiudadOrigen].getPrecio(i + 1) == Precio) {
-                    return true;
-                }
-            }
-        }
-        return false;*/
         if (grafo.existeAdyacencia(posicionDeCiudadOrigen,posicionDeCiudadDestino)) {
             for (int i = 0; i < grafo.listaDeAyacencia().get(posicionDeCiudadOrigen).size(); i++) {
                 if (grafo.listaDeAyacencia().get(i).get(posicionDeCiudadOrigen).getPeso() == Precio) {
@@ -587,7 +451,7 @@ public class MainGrafos extends javax.swing.JFrame {
         cbOrigen.setEnabled(b);
         cbDestino.setEnabled(b);
         jtPrecio.setEnabled(b);
-        jtDistancia.setEnabled(b);
+       // jtDistancia.setEnabled(b);
     }
 
     //---------FUNCIONES Y PROCEDIMIENTOS PARA GRAFICAR
@@ -604,25 +468,16 @@ public class MainGrafos extends javax.swing.JFrame {
                     grafo.puntosX.get(i) - ancho / 2 + 5 * ((12 - grafo.nombres.get(i).length()) / 2),
                     grafo.puntosY.get(i) + 5
             );
-/*            for (int j = 0; j < grafo.V[i].length(); j++) {
-                int elemento = grafo.V[i].get(j);*/
             for (int j = 0; j < grafo.listaDeAyacencia().get(i).size(); j++) {
-                //int elemento = grafo.listaDeAyacencia().get(i).get(j).getIndiceVertice();
                 int elemento = j;
                 grafico.drawLine(
                         grafo.puntosX.get(i),
                         grafo.puntosY.get(i),
-/*                        grafo.puntosX[grafo.V[i].get(j)],
-                        grafo.puntosY[grafo.V[i].get(j)]*/
                         grafo.puntosX.get(grafo.listaDeAyacencia().get(i).get(j).getIndiceVertice()),
                         grafo.puntosY.get(grafo.listaDeAyacencia().get(i).get(j).getIndiceVertice())
                 );
                 grafico.drawString(
-                        //Double.toString(grafo.costo(i, elemento)) + " bs " + Double.toString(grafo.costo2(i, elemento)) + " km",
-                        Double.toString(grafo.listaDeAyacencia().get(i).get(elemento).getPeso()) + " bs " + Double.toString(grafo.listaDeAyacencia().get(i).get(elemento).getPeso()) + " km",
-//                        (grafo.puntosX.get(i) + grafo.puntosX[grafo.V[i].get(j)]) / 2,
-//                        (grafo.puntosY.get(i) + grafo.puntosY[grafo.V[i].get(j)]) / 2
-                        
+                        Double.toString(grafo.listaDeAyacencia().get(i).get(elemento).getPeso()) + " bs ",                        
                         (grafo.puntosX.get(i) + grafo.puntosX.get(grafo.listaDeAyacencia().get(i).get(j).getIndiceVertice())) / 2,
                         (grafo.puntosY.get(i) + grafo.puntosY.get(grafo.listaDeAyacencia().get(i).get(j).getIndiceVertice())) / 2
                 );
@@ -637,11 +492,8 @@ public class MainGrafos extends javax.swing.JFrame {
         grafico.fillRect(0, 0, areaDibujo2.getWidth(), areaDibujo2.getHeight());
         grafico.setColor(Color.BLACK);
         int ancho = 70;
-        System.err.println("VR :"+VR.length);
-        for (int c = 0; c < VR.length; c++) {
-            
+        for (int c = 0; c < VR.length; c++) {         
             int i = VR[c];
-            System.err.println("i: "+ i);
             grafico.drawOval(grafo.puntosX.get(i) - ancho / 2, grafo.puntosY.get(i) - ancho / 2, ancho, ancho);
             grafico.drawString(
                     grafo.nombres.get(i),
@@ -659,9 +511,7 @@ public class MainGrafos extends javax.swing.JFrame {
                         grafo.puntosY.get(j)
                 );
                 grafico.drawString(
-                        //Double.toString(grafo.costo(i, j)) + " bs " + Double.toString(grafo.costo2(i, j)) + " km",
-                        //Double.toString(grafo.listaDeAyacencia().get(i).get(j).getPeso()) + " bs " + Double.toString(grafo.listaDeAyacencia().get(i).get(j).getPeso()) + " km",
-                        Double.toString(grafo.getPeso(i, j)) + " bs " + Double.toString(grafo.getPeso(i, j)) + " km",
+                        Double.toString(grafo.getPeso(i, j)) + " bs ",
                         (grafo.puntosX.get(i) + grafo.puntosX.get(j)) / 2,
                         (grafo.puntosY.get(i) + grafo.puntosY.get(j)) / 2
                 );
@@ -714,16 +564,12 @@ public class MainGrafos extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField jtDistancia;
     private javax.swing.JTextField jtPrecio;
     // End of variables declaration//GEN-END:variables
 }

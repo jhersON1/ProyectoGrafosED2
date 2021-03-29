@@ -35,7 +35,7 @@ public class GrafoPesado {
         M4 = new double[MAXVERTEX + 1][MAXVERTEX + 1];
     }
 
-    /*    public GrafoPesado(int nroDeVerticesIncial) throws ExcepcionNroVerticesInvalido {
+    public GrafoPesado(int nroDeVerticesIncial) throws ExcepcionNroVerticesInvalido {
         if (nroDeVerticesIncial < 0){
             throw new ExcepcionNroVerticesInvalido();
         }
@@ -43,8 +43,7 @@ public class GrafoPesado {
         for (int i = 0; i < nroDeVerticesIncial; i++){
             this.listasDeAdyacencias.add(new ArrayList<AdyacenteConPeso>());
         }
-        this.n = nroDeVerticesIncial;
-    }*/
+    }
     public void insertarVertice() {
         this.listasDeAdyacencias.add(new ArrayList<AdyacenteConPeso>());
     }
@@ -141,16 +140,6 @@ public class GrafoPesado {
         Iterable<Integer> it = adyacentesDelVertice;
         return it;
     }
-
-    /*    public int primerAdyacenteDeVertice(int posDeVertice){
-        validarVertice(posDeVertice);
-        Iterable<Integer> adyacentesEnTurno = adyacentesDeVertice(posDeVertice);
-        for (Integer posVerticeAdyacente : adyacentesEnTurno) {
-            return  posVerticeAdyacente;
-        }
-        return -1;
-    }*/
-    // hay que implementar
 
     public void eliminarArista(int posVerticeOrigen, int posVerticeDestino) throws ExcepcionAristaNoExiste {
         validarVertice(posVerticeOrigen);
@@ -295,28 +284,7 @@ public class GrafoPesado {
         }
     }
 
-    /*    public int getNumero(String ciudadSeleccionada) {
-        for (int i = 0; i <= n; i++) {
-            if (Nombre[i].equals(ciudadSeleccionada)) {
-                return i;
-            }
-        }
-        return -1;
-    }*/
- /*public void addArista(int u, double precio, double distancia, int v) {  //Crea la arista u-->v
-    if (precio <= 0 || distancia <= 0) {
-        System.err.println("Grafo.addArista:  El precio o distancia debe ser mayor que cero");
-        return;
-    }
-
-    String metodo = "addArista";
-    if (!isVerticeValido(u, metodo) || !isVerticeValido(v, metodo)) {
-        return;     //No existe el vertice u o el vertice v.
-    }
-    V[u].add(v, precio, distancia);      //Adicionar (data, precio,distancia) a la lista V[u]
-}*/
     public void caragarM1() {
-
         for (int i = 0; i < listasDeAdyacencias.size(); i++) {
             for (int j = 0; j < listasDeAdyacencias.get(i).size(); j++) {
                 if (i == j) {
@@ -363,7 +331,6 @@ public class GrafoPesado {
 
     ////------------OBCION  2 DISTANCIA--------
     public void caragarM3() {
-
         for (int i = 0; i < listasDeAdyacencias.size(); i++) {
             for (int j = 0; j < listasDeAdyacencias.get(i).size(); j++) {
                 if (i == j) {
@@ -556,5 +523,16 @@ public class GrafoPesado {
             }
         }
         return -1;
+    }
+    // verifica si existe un camino de un vertice origen a un vertice destino
+    public boolean existeCamino(int verticeOrigen, int verticeDestino) throws ExcepcionAristaNoExiste {
+        DFS dfs = new DFS(this, verticeOrigen);
+        List<Boolean> listaDeMarcados = new ArrayList<>();
+        listaDeMarcados = dfs.controlMarcados.listaMarcados();
+        
+        if (listaDeMarcados.get(verticeDestino) == Boolean.TRUE) {
+            return true;
+        }
+        return false;
     }
 }
